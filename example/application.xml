@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<application xmlns="http://schema.mobeelizer.com/application" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" application="Films" conflictMode="MANUAL" vendor="mobeelizer">
+  <devices>
+    <device name="mobile"/>
+  </devices>
+  <groups>
+    <group name="users"/>
+  </groups>
+  <roles>
+    <role device="mobile" group="users"/>
+  </roles>
+  <models>
+    <model name="Film">
+      <fields>
+        <field name="title" required="true" type="TEXT">
+          <credentials>
+            <credential createAllowed="ALL" readAllowed="ALL" role="users-mobile" updateAllowed="ALL"/>
+          </credentials>
+        </field>
+        <field name="director" required="true" type="BELONGS_TO">
+          <credentials>
+            <credential createAllowed="ALL" readAllowed="ALL" role="users-mobile" updateAllowed="ALL"/>
+          </credentials>
+          <options>
+            <option name="analyzeConflict">false</option>
+            <option name="model">Director</option>
+          </options>
+        </field>
+      </fields>
+      <credentials>
+        <credential createAllowed="ALL" deleteAllowed="ALL" readAllowed="ALL" resolveConflictAllowed="true" role="users-mobile" updateAllowed="ALL"/>
+      </credentials>
+    </model>
+    <model name="Director">
+      <fields>
+        <field name="boolField" required="false" type="BOOLEAN">
+          <credentials>
+            <credential createAllowed="ALL" readAllowed="ALL" role="users-mobile" updateAllowed="ALL"/>
+          </credentials>
+        </field>
+        <field name="name" required="true" type="TEXT">
+          <credentials>
+            <credential createAllowed="ALL" readAllowed="ALL" role="users-mobile" updateAllowed="ALL"/>
+          </credentials>
+        </field>
+        <field name="decimalField" required="false" type="DECIMAL">
+          <credentials>
+            <credential createAllowed="ALL" readAllowed="ALL" role="users-mobile" updateAllowed="ALL"/>
+          </credentials>
+          <options>
+            <option name="includeMinValue">false</option>
+            <option name="includeMaxValue">false</option>
+          </options>
+        </field>
+        <field name="dateField" required="false" type="DATE">
+          <credentials>
+            <credential createAllowed="ALL" readAllowed="ALL" role="users-mobile" updateAllowed="ALL"/>
+          </credentials>
+        </field>
+        <field name="integerField" required="false" type="INTEGER">
+          <credentials>
+            <credential createAllowed="ALL" readAllowed="ALL" role="users-mobile" updateAllowed="ALL"/>
+          </credentials>
+        </field>
+        <field name="fileField" required="false" type="FILE">
+          <credentials>
+            <credential createAllowed="ALL" readAllowed="ALL" role="users-mobile" updateAllowed="ALL"/>
+          </credentials>
+        </field>
+      </fields>
+      <credentials>
+        <credential createAllowed="ALL" deleteAllowed="ALL" readAllowed="ALL" resolveConflictAllowed="true" role="users-mobile" updateAllowed="ALL"/>
+      </credentials>
+    </model>
+  </models>
+</application>

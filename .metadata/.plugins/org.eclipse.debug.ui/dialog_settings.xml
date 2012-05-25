@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.debug.ui.LAUNCH_CONFIGURATIONS_DIALOG_SECTION">
+		<item value="674" key="DIALOG_WIDTH"/>
+		<item value=", com.aptana.js.debug.core.webbrowserLaunchConfigurationType, com.appcelerator.titanium.mobile.android.simulator.launchConfigurationType, " key="org.eclipse.debug.ui.EXPANDED_NODES"/>
+		<item value="752" key="DIALOG_HEIGHT"/>
+		<item value="381" key="org.eclipse.debug.ui.DIALOG_SASH_WEIGHTS_1"/>
+		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
+		<item value="618" key="org.eclipse.debug.ui.DIALOG_SASH_WEIGHTS_2"/>
+	</section>
+</section>
