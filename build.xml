@@ -20,7 +20,5 @@
 	   </not>
 	</condition>
 	
-	<echo message="${titanium.platform}" />
-	
 	<import file="${titanium.platform}/../module/android/build.xml"/>
 </project>
