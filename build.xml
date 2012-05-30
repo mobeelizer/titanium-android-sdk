@@ -14,11 +14,7 @@
 	   </not>
 	</condition>
 	
-	<condition property="android.platform" value="${env.ANDROID_HOME}/platforms/android-8">
-	   <not>  
-	      <isset property="android.platform"/>
-	   </not>
-	</condition>
+	<echo message="${android.platform}" />
 	
 	<import file="${titanium.platform}/../module/android/build.xml"/>
 </project>
