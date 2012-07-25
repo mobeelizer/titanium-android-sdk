@@ -76,6 +76,11 @@ public class MobeelizerRestrictionProxy extends KrollProxy implements withGetMob
     public MobeelizerRestrictionProxy ownerEq(final String owner) {
         return new MobeelizerRestrictionProxy(MobeelizerRestrictions.ownerEq(owner));
     }
+    
+    @Kroll.method
+    public MobeelizerRestrictionProxy groupEq(final String group) {
+        return new MobeelizerRestrictionProxy(MobeelizerRestrictions.groupEq(group));
+    }
 
     @Kroll.method
     public MobeelizerRestrictionProxy guidNe(final String guid) {
@@ -85,6 +90,11 @@ public class MobeelizerRestrictionProxy extends KrollProxy implements withGetMob
     @Kroll.method
     public MobeelizerRestrictionProxy ownerNe(final String owner) {
         return new MobeelizerRestrictionProxy(MobeelizerRestrictions.ownerNe(owner));
+    }
+    
+    @Kroll.method
+    public MobeelizerRestrictionProxy groupNe(final String group) {
+        return new MobeelizerRestrictionProxy(MobeelizerRestrictions.groupNe(group));
     }
 
     @Kroll.method

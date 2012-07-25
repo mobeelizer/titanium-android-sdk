@@ -18,6 +18,8 @@ public class MobeelizerEntityProxy extends KrollProxy {
     private String guid;
 
     private String owner;
+    
+    private String group;
 
     private boolean conflicted;
 
@@ -63,6 +65,16 @@ public class MobeelizerEntityProxy extends KrollProxy {
     @Kroll.method
     public void setOwner(final String owner) {
         this.owner = owner;
+    }
+    
+    @Kroll.method
+    public String getGroup() {
+        return group;
+    }
+
+    @Kroll.method
+    public void setGroup(final String group) {
+        this.group = group;
     }
 
     @Kroll.method
@@ -118,6 +130,7 @@ public class MobeelizerEntityProxy extends KrollProxy {
         map.put("model", getModel());
         map.put("guid", getGuid());
         map.put("owner", getOwner());
+        map.put("group", getGroup());
         map.put("conflicted", isConflicted());
         map.put("modified", isModified());
         map.put("deleted", isDeleted());
@@ -128,6 +141,7 @@ public class MobeelizerEntityProxy extends KrollProxy {
         this.model = readString("model", map);
         this.guid = readString("guid", map);
         this.owner = readString("owner", map);
+        this.group = readString("group", map);
         this.conflicted = readBoolean("conflicted", map);
         this.modified = readBoolean("modified", map);
         this.deleted = readBoolean("deleted", map);
