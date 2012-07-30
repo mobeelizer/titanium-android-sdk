@@ -58,6 +58,7 @@ if(!loggedIn) {
     Ti.API.info("##### 5 user is logged in");
 }
 
+
 Mobeelizer.logout();
 
 var loggedIn = Mobeelizer.isLoggedIn();
@@ -174,7 +175,10 @@ var MobeelizerDatabase = Mobeelizer.getDatabase();
 
 Ti.API.info("##### 19 database is => " + MobeelizerDatabase);
 
-MobeelizerDatabase.removeAll("simpleSyncEntity");
+var errors = MobeelizerDatabase.removeAll("simpleSyncEntity");
+if (errors) {
+	throw errors;
+}
 
 var Entity1 = MobeelizerDatabase.entity("simpleSyncEntity"); 
 Entity1.putField("title", "Xmen");
@@ -185,8 +189,9 @@ if(Entity1.getGuid()) {
 
 var Errors = MobeelizerDatabase.save(Entity1);
 
-if(!Errors.isValid()) {
-    throw "##### 21 entity hasn't been saved, validation errors";
+if(Errors) {
+	Ti.API.info("##### 21 entity hasn't been saved, validation errors");
+    throw Errors;
 } else {
     Ti.API.info("##### 21 entity has been saved");
 }
@@ -217,8 +222,9 @@ Entity2.putField("title", "hurra2");
 
 var Errors = MobeelizerDatabase.save(Entity2);
 
-if(!Errors.isValid()) {
-    throw "##### 23 entity hasn't been saved, validation errors";
+if(Errors) {
+	Ti.API.info("##### 23 entity hasn't been saved, validation errors");
+    throw Errors;
 } else {
     Ti.API.info("##### 23 entity has been saved");
 }
@@ -229,8 +235,9 @@ Entity3.putField("title", "hurra3");
 
 var Errors = MobeelizerDatabase.save(Entity3);
 
-if(!Errors.isValid()) {
-    throw "##### 24 entity hasn't been saved, validation errors";
+if(Errors) {
+	Ti.API.info("##### 24 entity hasn't been saved, validation errors");
+    throw Errors;
 } else {
     Ti.API.info("##### 24 entity has been saved");
 }
@@ -291,11 +298,15 @@ if(status != Mobeelizer.SYNC_FINISHED_WITH_SUCCESS) {
     Ti.API.info("##### 31 valid sync status");
 }
 
-MobeelizerDatabase.remove("simpleSyncEntity", Entity1.getGuid());
+var errors = MobeelizerDatabase.remove("simpleSyncEntity", Entity1.getGuid());
+if (errors) {
+	throw errors;
+}
 
-MobeelizerDatabase.save(Entity2);
-
-MobeelizerDatabase.removeObject(Entity2);
+var errors = MobeelizerDatabase.removeObject(Entity2);
+if (errors) {
+	throw errors;
+}
 
 var Count = MobeelizerDatabase.count("simpleSyncEntity");
 
@@ -305,7 +316,10 @@ if(Count != 1) {
     Ti.API.info("##### 32 valid count");
 }
 
-MobeelizerDatabase.removeAll("simpleSyncEntity");
+var errors = MobeelizerDatabase.removeAll("simpleSyncEntity");
+if (errors) {
+	throw errors;
+}
 var Count = MobeelizerDatabase.count("simpleSyncEntity");
 
 if(Count != 0) {
@@ -331,9 +345,11 @@ if(Count == 0) {
 
 // ------------------------------------
 
-MobeelizerDatabase.removeAll("fileSyncEntity")
+var errors = MobeelizerDatabase.removeAll("fileSyncEntity");
+if (errors) {
+	throw errors;
+}
 
-//var MobeelizerFile = Mobeelizer.createFile("name", Ti.Filesystem.getFile('application.xml').read.blob);
 var MobeelizerFile = Mobeelizer.createFile("name", Ti.Filesystem.getFile('application.xml').read());
 
 var Entity6 = MobeelizerDatabase.entity("fileSyncEntity"); 
@@ -342,8 +358,9 @@ Entity6.putField("photo", MobeelizerFile);
 
 var Errors = MobeelizerDatabase.save(Entity6);
 
-if(!Errors.isValid()) {
-    throw "##### 36 entity hasn't been saved, validation errors";
+if(Errors) {
+	Ti.API.info("##### 36 entity hasn't been saved, validation errors");
+	throw Errors;
 } else {
     Ti.API.info("##### 36 entity has been saved");
 }
@@ -380,7 +397,10 @@ if(status != Mobeelizer.SYNC_FINISHED_WITH_SUCCESS) {
     Ti.API.info("##### 42 valid sync status");
 }
 
-MobeelizerDatabase.removeAll("fileSyncEntity");
+var errors = MobeelizerDatabase.removeAll("fileSyncEntity");
+if (errors) {
+	throw errors;
+}
 
 var status = Mobeelizer.syncAllAndWait();
 
@@ -406,7 +426,10 @@ if(Entity6.getField("photo").getStream().text != Entity8.getField("photo").getSt
 
 // ------------------------------------
 
-MobeelizerDatabase.removeAll("simpleSyncEntity");
+var errors = MobeelizerDatabase.removeAll("simpleSyncEntity");
+if (errors) {
+	throw errors;
+}
 
 var MobeelizerCriteriaBuilder = MobeelizerDatabase.find("simpleSyncEntity");
 
@@ -442,8 +465,9 @@ Entity.putField("title", "b");
 
 var Errors = MobeelizerDatabase.save(Entity);
 
-if(!Errors.isValid()) {
-    throw "##### 51 entity hasn't been saved, validation errors";
+if(Errors) {
+	Ti.API.info("##### 51 entity hasn't been saved, validation errors");
+    throw Errors;
 }
 
 var Entity = MobeelizerDatabase.entity("simpleSyncEntity"); 
@@ -452,8 +476,9 @@ Entity.putField("title", "c");
 
 var Errors = MobeelizerDatabase.save(Entity);
 
-if(!Errors.isValid()) {
-    throw "##### 52 entity hasn't been saved, validation errors";
+if(Errors) {
+	Ti.API.info("##### 52 entity hasn't been saved, validation errors");
+    throw Errors;
 }
 
 var Entity = MobeelizerDatabase.entity("simpleSyncEntity"); 
@@ -462,8 +487,9 @@ Entity.putField("title", "d");
 
 var Errors = MobeelizerDatabase.save(Entity);
 
-if(!Errors.isValid()) {
-    throw "##### 53 entity hasn't been saved, validation errors";
+if(Errors) {
+	Ti.API.info("##### 53 entity hasn't been saved, validation errors");
+	throw Errors;
 }
 
 var MobeelizerRestriction = MobeelizerDatabase.Restriction;
@@ -603,5 +629,7 @@ Mobeelizer.sync(function(e) {
         });
     });
 });
+
+Ti.API.info("##### TEST COMPLETE");
 
 // ------------------------------------

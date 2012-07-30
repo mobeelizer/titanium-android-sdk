@@ -2,6 +2,7 @@ package ti.mobeelizer.sdk;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
@@ -19,13 +20,8 @@ public class MobeelizerErrorsProxy extends KrollProxy {
     }
 
     @Kroll.method
-    public boolean isValid() {
-        return errors.isValid();
-    }
-
-    @Kroll.method
-    public MobeelizerErrorProxy[] getErrors() {
-        return convertToProxyErrors(errors.getErrors());
+    public MobeelizerErrorProxy[] getGlobalErrors() {
+        return convertToProxyErrors(errors.getGlobalErrors());
     }
 
     @Kroll.method
@@ -36,6 +32,18 @@ public class MobeelizerErrorsProxy extends KrollProxy {
     @Kroll.method
     public MobeelizerErrorProxy[] getFieldErrors(final String field) {
         return convertToProxyErrors(errors.getFieldErrors(field));
+    }
+
+    @Kroll.method
+    public String[] getInvalidFields() {
+        Set<String> result = errors.getInvalidFields();
+        return result.toArray(new String[result.size()]);
+    }
+
+    @Override
+    @Kroll.method
+    public String toString() {
+        return errors.toString();
     }
 
     private MobeelizerErrorProxy[] convertToProxyErrors(final List<MobeelizerError> errors) {

@@ -35,10 +35,11 @@ function addEntity(name, boolValue, intValue) {
 	entity.putField("boolField", boolValue);
 	entity.putField("integerField", intValue);
 	var errors = database.save(entity);
-	if (errors.isValid()) {
+	if (errors == null) {
 		Ti.API.info("################# => entity '"+name+"', '"+boolValue+"' saved");
 	} else {
 		Ti.API.info("################# => ERROR: entity '"+name+"' not saved");
+		throw errors;
 	}
 }
 
@@ -60,13 +61,14 @@ entity.putField("boolField", true);
 entity.putField("dateField", new Date(100));
 entity.putField("decimalField", 10.1);
 entity.putField("integerField", 33);
-var saveStatus = database.save(entity);
 
-if(!saveStatus.isValid()) {
-    throw "##### invalid save status";   
-} else {
-    Ti.API.info("##### valid save status");
+var errors = database.save(entity);
+if (errors) {
+	Ti.API.info(errors);
+	throw "exception!!!";
 }
+
+Ti.API.info("##### valid save status");
 
 function assertCount(expected, value) {
 	if(expected != value) {
@@ -103,7 +105,10 @@ assertCount(0, database.find("Director").add(database.Restriction.eq("integerFie
 
 // ---------------------------------------
 
-database.removeAll("Director");
+var errors = database.removeAll("Director");
+if (errors) {
+	throw errors;
+}
 
 addEntity("BBB", true, 1);
 addEntity("BBB", false, 5);

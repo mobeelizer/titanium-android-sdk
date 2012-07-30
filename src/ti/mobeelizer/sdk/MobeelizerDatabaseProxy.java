@@ -34,19 +34,19 @@ public class MobeelizerDatabaseProxy extends KrollProxy {
     }
 
     @Kroll.method
-    public void remove(final String model, final String guid) {
-        mobeelizerDatabase.delete(model, guid);
+    public MobeelizerErrorsProxy remove(final String model, final String guid) {
+        return createResultProxy(mobeelizerDatabase.delete(model, guid));
     }
 
     @SuppressWarnings("unchecked")
     @Kroll.method
-    public void removeObject(final MobeelizerEntityProxy entity) {
-        mobeelizerDatabase.deleteMap(entity.getAsMap());
+    public MobeelizerErrorsProxy removeObject(final MobeelizerEntityProxy entity) {
+        return createResultProxy(mobeelizerDatabase.deleteMap(entity.getAsMap()));
     }
 
     @Kroll.method
-    public void removeAll(final String model) {
-        mobeelizerDatabase.deleteAll(model);
+    public MobeelizerErrorsProxy removeAll(final String model) {
+        return createResultProxy(mobeelizerDatabase.deleteAll(model));
     }
 
     @Kroll.method
@@ -80,13 +80,11 @@ public class MobeelizerDatabaseProxy extends KrollProxy {
     @Kroll.method
     public MobeelizerErrorsProxy save(final MobeelizerEntityProxy entity) {
         Map<String, Object> entityAsMap = entity.getAsMap();
-
-        MobeelizerErrors errors = mobeelizerDatabase.save(entityAsMap);
-        if (errors.isValid()) {
+        MobeelizerErrors result = mobeelizerDatabase.save(entityAsMap);
+        if (result == null) {
             entity.updateFromMap(entityAsMap);
         }
-
-        return new MobeelizerErrorsProxy(errors);
+        return createResultProxy(result);
     }
 
     @Kroll.getProperty(name = "Order")
@@ -97,5 +95,12 @@ public class MobeelizerDatabaseProxy extends KrollProxy {
     @Kroll.getProperty(name = "Restriction")
     public MobeelizerRestrictionProxy getRestriction() {
         return RESTRICTION;
+    }
+
+    private MobeelizerErrorsProxy createResultProxy(final MobeelizerErrors result) {
+        if (result != null) {
+            return new MobeelizerErrorsProxy(result);
+        }
+        return null;
     }
 }
