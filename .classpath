@@ -9,7 +9,7 @@
 	<classpathentry kind="lib" path="/Users/michalnawalany/Library/Application Support/Titanium/mobilesdk/osx/2.0.1.GA2/android/js.jar"/>
 	<classpathentry kind="lib" path="/Users/michalnawalany/Library/Application Support/Titanium/mobilesdk/osx/2.0.1.GA2/android/kroll-common.jar"/>
 	<classpathentry kind="lib" path="/Users/michalnawalany/Library/Application Support/Titanium/mobilesdk/osx/2.0.1.GA2/android/kroll-apt.jar"/>
-	<classpathentry kind="lib" path="lib/android-sdk-1.3.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/mobeelizer-android-sdk.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
