@@ -21,11 +21,10 @@ import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.TiBlob;
 
+import com.mobeelizer.java.api.MobeelizerOperationError;
 import com.mobeelizer.mobile.android.MobeelizerApplication;
 import com.mobeelizer.mobile.android.MobeelizerFileImpl;
-import com.mobeelizer.mobile.android.api.MobeelizerLoginCallback;
-import com.mobeelizer.mobile.android.api.MobeelizerLoginStatus;
-import com.mobeelizer.mobile.android.api.MobeelizerSyncCallback;
+import com.mobeelizer.mobile.android.api.MobeelizerOperationCallback;
 import com.mobeelizer.mobile.android.api.MobeelizerSyncListener;
 import com.mobeelizer.mobile.android.api.MobeelizerSyncStatus;
 
@@ -86,24 +85,25 @@ public class MobeelizersdkModule extends KrollModule {
     }
 
     @Kroll.method
-    public String loginToInstanceAndWait(final String instance, final String login, final String password) {
-        return mobeelizerApp.login(instance, login, password).toString();
+    public MobeelizerOperationErrorProxy loginToInstanceAndWait(final String instance, final String login, final String password) {
+        return convertOperationError(mobeelizerApp.login(instance, login, password));
     }
 
     @Kroll.method
     public void loginToInstance(final String instance, final String login, final String password,
-            final KrollFunction callbackFunction) {
-        mobeelizerApp.login(instance, login, password, createMobeelizerLoginCallback(callbackFunction));
+            final KrollFunction successFunction, final KrollFunction failureFunction) {
+        mobeelizerApp.login(instance, login, password, ctreateMobeelizerOperationCallback(successFunction, failureFunction));
     }
 
     @Kroll.method
-    public String loginAndWait(final String login, final String password) {
-        return mobeelizerApp.login(login, password).toString();
+    public MobeelizerOperationErrorProxy loginAndWait(final String login, final String password) {
+        return convertOperationError(mobeelizerApp.login(login, password));
     }
 
     @Kroll.method
-    public void login(final String login, final String password, final KrollFunction callbackFunction) {
-        mobeelizerApp.login(login, password, createMobeelizerLoginCallback(callbackFunction));
+    public void login(final String login, final String password, final KrollFunction successFunction,
+            final KrollFunction failureFunction) {
+        mobeelizerApp.login(login, password, ctreateMobeelizerOperationCallback(successFunction, failureFunction));
     }
 
     @Kroll.method
@@ -122,23 +122,23 @@ public class MobeelizersdkModule extends KrollModule {
     }
 
     @Kroll.method
-    public void sync(final KrollFunction callbackFunction) {
-        mobeelizerApp.sync(ctreateMobeelizerSyncCallback(callbackFunction));
+    public void sync(final KrollFunction successFunction, final KrollFunction failureFunction) {
+        mobeelizerApp.sync(ctreateMobeelizerOperationCallback(successFunction, failureFunction));
     }
 
     @Kroll.method
-    public String syncAndWait() {
-        return mobeelizerApp.sync().toString();
+    public MobeelizerOperationErrorProxy syncAndWait() {
+        return convertOperationError(mobeelizerApp.sync());
     }
 
     @Kroll.method
-    public void syncAll(final KrollFunction callbackFunction) {
-        mobeelizerApp.syncAll(ctreateMobeelizerSyncCallback(callbackFunction));
+    public void syncAll(final KrollFunction successFunction, final KrollFunction failureFunction) {
+        mobeelizerApp.syncAll(ctreateMobeelizerOperationCallback(successFunction, failureFunction));
     }
 
     @Kroll.method
-    public String syncAllAndWait() {
-        return mobeelizerApp.syncAll().toString();
+    public MobeelizerOperationErrorProxy syncAllAndWait() {
+        return convertOperationError(mobeelizerApp.syncAll());
     }
 
     @Kroll.method
@@ -162,47 +162,49 @@ public class MobeelizersdkModule extends KrollModule {
     }
 
     @Kroll.method
-    public String registerForRemoteNotifications(final String registrationId) {
-        return mobeelizerApp.registerForRemoteNotifications(registrationId).toString();
+    public MobeelizerOperationErrorProxy registerForRemoteNotifications(final String registrationId) {
+        return convertOperationError(mobeelizerApp.registerForRemoteNotifications(registrationId));
     }
 
     @Kroll.method
-    public String unregisterForRemoteNotifications() {
-        return mobeelizerApp.unregisterForRemoteNotifications().toString();
+    public MobeelizerOperationErrorProxy unregisterForRemoteNotifications() {
+        return convertOperationError(mobeelizerApp.unregisterForRemoteNotifications());
     }
 
     @Kroll.method
-    public String sendRemoteNotification(final KrollDict notification) {
+    public MobeelizerOperationErrorProxy sendRemoteNotification(final KrollDict notification) {
         return performSendRemoteNotification(null, null, null, notification);
     }
 
     @Kroll.method
-    public String sendRemoteNotificationToDevice(final KrollDict notification, final String device) {
+    public MobeelizerOperationErrorProxy sendRemoteNotificationToDevice(final KrollDict notification, final String device) {
         return performSendRemoteNotification(device, null, null, notification);
     }
 
     @Kroll.method
-    public String sendRemoteNotificationToUsers(final KrollDict notification, final String[] users) {
+    public MobeelizerOperationErrorProxy sendRemoteNotificationToUsers(final KrollDict notification, final String[] users) {
         return performSendRemoteNotification(null, null, users, notification);
     }
 
     @Kroll.method
-    public String sendRemoteNotificationToUsersOnDevice(final KrollDict notification, final String[] users, final String device) {
+    public MobeelizerOperationErrorProxy sendRemoteNotificationToUsersOnDevice(final KrollDict notification,
+            final String[] users, final String device) {
         return performSendRemoteNotification(device, null, users, notification);
     }
 
     @Kroll.method
-    public String sendRemoteNotificationToGroup(final KrollDict notification, final String group) {
+    public MobeelizerOperationErrorProxy sendRemoteNotificationToGroup(final KrollDict notification, final String group) {
         return performSendRemoteNotification(null, group, null, notification);
     }
 
     @Kroll.method
-    public String sendRemoteNotificationToGroupOnDevice(final KrollDict notification, final String group, final String device) {
+    public MobeelizerOperationErrorProxy sendRemoteNotificationToGroupOnDevice(final KrollDict notification, final String group,
+            final String device) {
         return performSendRemoteNotification(device, group, null, notification);
     }
 
-    private String performSendRemoteNotification(final String device, final String group, final String[] users,
-            final KrollDict notification) {
+    private MobeelizerOperationErrorProxy performSendRemoteNotification(final String device, final String group,
+            final String[] users, final KrollDict notification) {
         Map<String, String> notificationContent = new HashMap<String, String>();
         for (Entry<String, Object> notifiationElement : notification.entrySet()) {
             notificationContent.put(notifiationElement.getKey(), notifiationElement.getValue().toString());
@@ -211,31 +213,45 @@ public class MobeelizersdkModule extends KrollModule {
         if (users != null) {
             usersList = Arrays.asList(users);
         }
-        return mobeelizerApp.sendRemoteNotification(device, group, usersList, notificationContent).toString();
+        return convertOperationError(mobeelizerApp.sendRemoteNotification(device, group, usersList, notificationContent));
     }
 
-    private MobeelizerLoginCallback createMobeelizerLoginCallback(final KrollFunction callbackFunction) {
-        return new MobeelizerLoginCallback() {
-
-            @Override
-            public void onLoginFinished(final MobeelizerLoginStatus status) {
-                HashMap<String, Object> args = new HashMap<String, Object>();
-                args.put("status", status.toString());
-                callbackFunction.call(getKrollObject(), args);
-            }
-        };
+    private MobeelizerOperationErrorProxy convertOperationError(final MobeelizerOperationError error) {
+        if (error == null) {
+            return null;
+        } else {
+            return new MobeelizerOperationErrorProxy(error);
+        }
     }
 
-    private MobeelizerSyncCallback ctreateMobeelizerSyncCallback(final KrollFunction callbackFunction) {
-        return new MobeelizerSyncCallback() {
+    private MobeelizerOperationCallback ctreateMobeelizerOperationCallback(final KrollFunction successFunction,
+            final KrollFunction failureFunction) {
+        return new MobeelizerOperationCallback() {
 
             @Override
-            public void onSyncFinished(final MobeelizerSyncStatus status) {
+            public void onSuccess() {
+                if (successFunction == null) {
+                    return;
+                }
                 HashMap<String, Object> args = new HashMap<String, Object>();
-                args.put("status", status.toString());
-                callbackFunction.call(getKrollObject(), args);
+                successFunction.call(getKrollObject(), args);
             }
 
+            @Override
+            public void onFailure(final MobeelizerOperationError error) {
+                if (failureFunction == null) {
+                    return;
+                }
+                HashMap<String, Object> args = new HashMap<String, Object>();
+                args.put("code", error.getCode());
+                args.put("message", error.getMessage());
+                String[] arguments = new String[error.getArguments().size()];
+                for (int i = 0; i < arguments.length; i++) {
+                    arguments[i] = error.getArguments().get(i).toString();
+                }
+                args.put("arguments", arguments);
+                failureFunction.call(getKrollObject(), args);
+            }
         };
     }
 

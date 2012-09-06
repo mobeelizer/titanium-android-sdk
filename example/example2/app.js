@@ -45,7 +45,7 @@ function addEntity(name, boolValue, intValue) {
 
 var Mobeelizer = require('ti.mobeelizer.sdk');
 
-Mobeelizer.loginAndWait("u1", "pass");
+Mobeelizer.loginAndWait("user", "pass");
 
 var database = Mobeelizer.getDatabase();
 
